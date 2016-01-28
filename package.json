@@ -1,7 +1,7 @@
 {
   "name": "duet",
-  "version": "1.0.1",
-  "description": "",
+  "version": "1.1.0",
+  "description": "duet",
   "main": "lib/index.js",
   "bin": {
     "duet": "bin/duet.js"
@@ -28,6 +28,15 @@
     "virtual-dom": "^2.1.1",
     "xtend": "^4.0.1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/colingourlay/duet.git"
+  },
   "author": "Colin Gourlay <colin@colin-gourlay.com>",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/colingourlay/duet/issues"
+  },
+  "homepage": "https://github.com/colingourlay/duet#readme",
+  "devDependencies": {}
 }

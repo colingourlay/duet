@@ -27,8 +27,8 @@ if (!fs.existsSync(entry)) {
 
 if (fs.existsSync(out)) {
     rmdirp.sync(out);
-    mkdirp.sync(out);
 }
+mkdirp.sync(out);
 
 var html = `<!doctype html>
 <head>
