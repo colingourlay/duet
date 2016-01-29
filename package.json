@@ -24,7 +24,7 @@
     "optimist": "^0.6.1",
     "rmdirp": "^0.1.0",
     "uglifyify": "^3.0.1",
-    "vdom-serialized-patch": "^1.0.3",
+    "vdom-serialized-patch": "git+ssh://git@github.com:colingourlay/vdom-serialized-patch.git#ca7eba6",
     "virtual-dom": "^2.1.1",
     "xtend": "^4.0.1"
   },
