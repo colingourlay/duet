@@ -24,7 +24,6 @@
     "observ-varhash": "^1.0.6",
     "optimist": "^0.6.1",
     "pathname-match": "^1.1.2",
-    "rmdirp": "^0.1.0",
     "uglifyify": "^3.0.1",
     "vdom-serialized-patch": "git+ssh://git@github.com:colingourlay/vdom-serialized-patch.git#ca7eba6",
     "virtual-dom": "^2.1.1",

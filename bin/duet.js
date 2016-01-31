@@ -5,7 +5,6 @@ var path = require('path');
 var optimist = require('optimist');
 var browserify = require('browserify');
 var mkdirp = require('mkdirp');
-var rmdirp = require('mkdirp');
 var babelify = require('babelify');
 var es2015 = require('babel-preset-es2015');
 var uglifyify = require('uglifyify');
@@ -25,9 +24,6 @@ if (!fs.existsSync(entry)) {
     process.exit(0);
 }
 
-if (fs.existsSync(out)) {
-    rmdirp.sync(out);
-}
 mkdirp.sync(out);
 
 var html = `<!doctype html>
