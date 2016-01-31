@@ -14,7 +14,7 @@ var argv = optimist
     .default({
         entry: 'src/index.js',
         out: 'public',
-        title: 'Hyper',
+        title: 'duet',
         debug: false
     }).argv;
 
