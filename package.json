@@ -25,7 +25,7 @@
     "optimist": "^0.6.1",
     "pathname-match": "^1.1.2",
     "uglifyify": "^3.0.1",
-    "vdom-serialized-patch": "git+ssh://git@github.com:colingourlay/vdom-serialized-patch.git#ca7eba6",
+    "vdom-serialized-patch": "^1.0.5",
     "virtual-dom": "^2.1.1",
     "wayfarer": "^6.1.0",
     "xtend": "^4.0.1"
