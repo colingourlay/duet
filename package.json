@@ -11,7 +11,7 @@
     "babelify": "^7.2.0",
     "browserify": "^8.0.0",
     "console": "^0.5.2",
-    "csjs": "^1.0.0-beta.0",
+    "csjs": "^1.0.0-beta.1",
     "form-data-set": "^2.0.0",
     "hash-match": "^1.0.2",
     "hyperstyles": "^3.3.1",
