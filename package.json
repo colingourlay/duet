@@ -15,7 +15,7 @@
     "form-data-set": "^2.0.0",
     "hash-match": "^1.0.2",
     "hyperstyles": "^3.3.1",
-    "hyperx": "^1.2.0",
+    "hyperx": "^2.0.2",
     "insert-css": "^0.2.0",
     "mkdirp": "^0.5.1",
     "node-static": "~0.7.6",
