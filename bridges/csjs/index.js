@@ -18,7 +18,6 @@ function flush() {
 }
 
 function handleMessage(type, data) {
-    console.log(arguments);
     switch (type) {
         case 'STYLES':
             insertCSS(data.value);

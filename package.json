@@ -9,7 +9,7 @@
   "dependencies": {
     "babel-preset-es2015": "^6.3.13",
     "babelify": "^7.2.0",
-    "browserify": "^8.0.0",
+    "browserify": "^13.0.1",
     "console": "^0.5.2",
     "csjs": "^1.0.0-beta.1",
     "form-data-set": "^2.0.0",
