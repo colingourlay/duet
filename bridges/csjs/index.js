@@ -9,36 +9,23 @@ var postMessageToUserThread;
 function flush() {
     if (typeof postMessageToUserThread === 'function') {
         while (queue.length) {
-            postMessageToUserThread({type: 'CSJS::STYLES', data: queue.shift()});
+            postMessageToUserThread({
+                type: 'STYLES',
+                data: queue.shift()
+            });
         }
     }
 }
 
-function handleMessageType(type, data) {
-    var wasHandled = false;
-
+function handleMessage(type, data) {
+    console.log(arguments);
     switch (type) {
-        case 'CSJS::STYLES':
+        case 'STYLES':
             insertCSS(data.value);
             break;
         default:
             break;
     }
-
-    return wasHandled;
-}
-
-function css() {
-    var args, styles;
-
-    args = slice.call(arguments);
-    styles = csjs.apply(null, args);
-
-    queue.push({value: csjs.getCss(styles)});
-
-    flush();
-
-    return styles;
 }
 
 function initAppThread(_postMessage) {
@@ -48,12 +35,26 @@ function initAppThread(_postMessage) {
     }
 }
 
+function css() {
+    var args, styles;
+
+    args = slice.call(arguments);
+    styles = csjs.apply(null, args);
+
+    queue.push({
+        value: csjs.getCss(styles)
+    });
+
+    flush();
+
+    return styles;
+}
+
 module.exports = extend(css, {
-    css: css,
+    namespace: 'CSJS',
+    handleMessage: handleMessage,
+    initAppThread: initAppThread,
 
-    // TODO: These should not part of the public API
-    _initAppThread: initAppThread,
-    _handleMessageType: handleMessageType
+    // API
+    css: css
 });
-
-// [1] TODO: These should not part of the public API

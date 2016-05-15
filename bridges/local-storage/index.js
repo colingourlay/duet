@@ -6,11 +6,37 @@ var queue = [];
 var postMessageToAppThread;
 var postMessageToUserThread;
 
+function handleMessage(type, data) {
+    switch (type) {
+        case 'REQUEST':
+            onRequest(data);
+            break;
+        case 'RESPONSE':
+            onResponse(data);
+            break;
+        default:
+            break;
+    }
+}
+
+function initAppThread(_postMessage) {
+    if (typeof postMessageToUserThread !== 'function') {
+        postMessageToUserThread = _postMessage;
+        flush();
+    }
+}
+
+function initUserThread(_postMessage) {
+    if (typeof postMessageToAppThread !== 'function') {
+        postMessageToAppThread = _postMessage;
+    }
+}
+
 function flush() {
     if (typeof postMessageToUserThread === 'function') {
         while (queue.length) {
             postMessageToUserThread({
-                type: 'LOCAL_STORAGE::REQUEST',
+                type: 'REQUEST',
                 data: queue.shift()
             });
         }
@@ -47,23 +73,10 @@ function getOrSet(key, valueOrCallback) {
     }
 }
 
-function initAppThread(_postMessage) {
-    if (typeof postMessageToUserThread !== 'function') {
-        postMessageToUserThread = _postMessage;
-        flush();
-    }
-}
-
-function initUserThread(_postMessage) {
-    if (typeof postMessageToAppThread !== 'function') {
-        postMessageToAppThread = _postMessage;
-    }
-}
-
 function onRequest(data) {
     if (!data.value) {
         return postMessageToAppThread({
-            type: 'LOCAL_STORAGE::RESPONSE',
+            type: 'RESPONSE',
             data: {
                 handlerKey: data.handlerKey,
                 value: global.localStorage.getItem(data.key)
@@ -82,29 +95,13 @@ function onResponse(data) {
     }
 }
 
-function handleMessageType(type, data) {
-    var wasHandled = false;
-
-    switch (type) {
-        case 'LOCAL_STORAGE::REQUEST':
-            onRequest(data);
-            break;
-        case 'LOCAL_STORAGE::RESPONSE':
-            onResponse(data);
-            break;
-        default:
-            break;
-    }
-
-    return wasHandled;
-}
-
 module.exports = extend(getOrSet, {
-    getItem: getItem,
-    setItem: setItem,
+    namespace: 'LOCAL_STORAGE',
+    handleMessage: handleMessage,
+    initAppThread: initAppThread,
+    initUserThread: initUserThread,
 
-    // TODO: These should not part of the public API
-    _initAppThread: initAppThread,
-    _initUserThread: initUserThread,
-    _handleMessageType: handleMessageType
+    // API
+    getItem: getItem,
+    setItem: setItem
 });
