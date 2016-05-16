@@ -27,7 +27,6 @@
     "uglifyify": "^3.0.1",
     "vdom-serialized-patch": "^1.0.5",
     "virtual-dom": "^2.1.1",
-    "wayfarer": "^6.1.0",
     "xtend": "^4.0.1"
   },
   "repository": {
