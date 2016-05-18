@@ -66,7 +66,7 @@ function setItem(key, value) {
 }
 
 function getOrSet(key, valueOrCallback) {
-    if (typeof valueOrFn === 'function') {
+    if (typeof valueOrCallback === 'function') {
         getItem(key, valueOrCallback);
     } else {
         setItem(key, valueOrCallback);
