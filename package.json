@@ -24,6 +24,7 @@
     "observ-varhash": "^1.0.6",
     "optimist": "^0.6.1",
     "pathname-match": "^1.1.2",
+    "tree-walk": "^0.4.0",
     "uglifyify": "^3.0.1",
     "vdom-serialized-patch": "^1.0.5",
     "virtual-dom": "^2.1.1",

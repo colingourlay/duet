@@ -2,10 +2,13 @@ var extend = require('xtend/mutable');
 var struct = require('observ-struct');
 var varhash = require('observ-varhash');
 var value = require('observ');
-
-var forModel = require('./domEvent').forModel;
+var event = require('../bridges/virtual-dom/event');
 
 var models = [];
+
+function eventForModel(fn, customData) {
+    return event(this, fn, customData);
+}
 
 function modelFor(state) {
     var model;
@@ -22,7 +25,6 @@ function modelFor(state) {
 
     return model;
 }
-
 
 function model(state) {
     var model;
@@ -41,8 +43,8 @@ function model(state) {
 
     model = struct(state);
 
-    model.event = forModel;
-    model.ev = forModel; // alias
+    model.event = eventForModel;
+    model.ev = eventForModel; // alias
 
     models.push(model);
 
@@ -53,5 +55,6 @@ module.exports = extend(model, {
     struct: struct,
     varhash: varhash,
     value: value,
+    model: model,
     modelFor: modelFor
 });
