@@ -5,7 +5,6 @@ var diff = require('virtual-dom/diff');
 var serialize = require('vdom-serialized-patch/serialize');
 var patch = require('vdom-serialized-patch/patch');
 var getFormData = require('form-data-set/element');
-var event = require('./event');
 var eventNames = require('./eventNames');
 var concat = Array.prototype.concat;
 
@@ -222,7 +221,7 @@ function onEvent(data) {
     var handler = store[data.key].eventHandlers[data.handlerKey];
 
     if (handler != null) {
-        handler(data);
+        handler(data.eventData, data.formData);
     }
 }
 
