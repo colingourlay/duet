@@ -93,44 +93,67 @@ function update(key, tree) {
 
 }
 
-function eventListener(key, eventName, event) {
-    var handlerKey, eventData, formData;
+function primitivePropsReducer(obj, atObj, props, key) {
+    var value;
 
-    function propsReducer(props, key) {
-        var value = event[key];
-
-        if (key.charAt(0) === key.charAt(0).toLowerCase() && (
-            typeof value === 'number' ||
-            typeof value === 'string' ||
-            typeof value === 'boolean')) {
-
-            props[key] = value;
-        }
-
+    try {
+        value = obj[key];
+    } catch (e) {
         return props;
     }
 
+    if (key.charAt(0) === key.charAt(0).toLowerCase() && (
+        typeof value === 'number' ||
+        typeof value === 'string' ||
+        typeof value === 'boolean')) {
+
+        props[key] = value;
+    }
+
+    return props;
+}
+
+function getPrimitiveProps(obj, atObj) {
+    var props = {};
+
+    if (atObj) {
+        return Object.keys(atObj).reduce(primitivePropsReducer.bind(null, obj, atObj), props);
+    }
+
+    for (key in obj) {
+        props = primitivePropsReducer(obj, obj, props, key);
+    }
+
+    return props;
+}
+
+function eventListener(key, eventName, event) {
+    var handlerKey, eventData, valueData;
+
     handlerKey = event.target.dataset[eventName];
 
-    if (typeof handlerKey === 'string') { // number?
+    if (typeof handlerKey === 'string') {
 
-        eventData = Object.keys(event.constructor.prototype).reduce(propsReducer, {});
+        setTimeout(function () {
+            eventData = getPrimitiveProps(event, event.constructor.prototype);
+            eventData.target = getPrimitiveProps(event.target, Element);
+            valueData = getFormData(event.target);
 
-        formData = getFormData(event.target);
-
-        if (!(new RegExp('\\b' + eventName + '\\b')).test(event.target.dataset['default'])) {
-            event.preventDefault();
-        }
-
-        postMessageToAppThread({
-            type: 'EVENT',
-            data: {
-                key: key,
-                handlerKey: handlerKey,
-                eventData: eventData,
-                formData: formData
+            if (!(new RegExp('\\b' + eventName + '\\b')).test(event.target.dataset.preventDefault)) {
+                event.preventDefault();
             }
-        });
+
+            postMessageToAppThread({
+                type: 'EVENT',
+                data: {
+                    key: key,
+                    handlerKey: handlerKey,
+                    eventData: eventData,
+                    valueData: valueData
+                }
+            });
+        }, 0);
+
     }
 }
 
@@ -221,7 +244,7 @@ function onEvent(data) {
     var handler = store[data.key].eventHandlers[data.handlerKey];
 
     if (handler != null) {
-        handler(data.eventData, data.formData);
+        handler(data.eventData, data.valueData);
     }
 }
 
