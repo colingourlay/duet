@@ -1,65 +1,37 @@
-var extend = require('xtend/mutable');
-var walk = require('tree-walk');
+var walk        = require('tree-walk');
 var VirtualNode = require('virtual-dom/vnode/vnode');
-var diff = require('virtual-dom/diff');
-var serialize = require('vdom-serialized-patch/serialize');
-var patch = require('vdom-serialized-patch/patch');
+var diff        = require('virtual-dom/diff');
+var serialize   = require('vdom-serialized-patch/serialize');
+var patch       = require('vdom-serialized-patch/patch');
 var getFormData = require('form-data-set/element');
-var eventNames = require('./eventNames');
-var concat = Array.prototype.concat;
+var channel     = require('./channel');
+var eventNames  = require('./eventNames');
+var concat      = Array.prototype.concat;
 
 var nextStoreKey = 0;
 var store = {};
 
-var postMessageToAppThread;
-var postMessageToUserThread;
-
-function handleMessage(type, data) {
-    switch (type) {
-        case 'CREATE':
-            onCreate(data);
-            break;
-        case 'PATCH':
-            onPatch(data);
-            break;
-        case 'EVENT':
-            onEvent(data);
-            break;
-        default:
-            break;
-    }
-}
-
-function initAppThread(_postMessage) {
-    if (typeof postMessageToUserThread !== 'function') {
-        postMessageToUserThread = _postMessage;
-    }
-}
-
-function initUserThread(_postMessage) {
-    if (typeof postMessageToAppThread !== 'function') {
-        postMessageToAppThread = _postMessage;
-    }
-}
-
-function vdom(selector, tree) {
+function vdom(selector, options) {
     var key = nextStoreKey++;
+
+    options = typeof options === 'object' ? options : {};
 
     store[key] = {
         tree: new VirtualNode('div'),
         eventHandlers: []
     };
 
-    postMessageToUserThread({
+    channel.postMessageToMain({
         type: 'CREATE',
         data: {
             key: key,
-            selector: selector
+            selector: selector,
+            options: options
         }
     });
 
-    if (tree) {
-        update(key, tree);
+    if (options.tree) {
+        update(key, options.tree);
     }
 
     return update.bind(null, key);
@@ -83,7 +55,7 @@ function update(key, tree) {
 
     stored.tree = tree;
 
-    postMessageToUserThread({
+    channel.postMessageToMain({
         type: 'PATCH',
         data: {
             key: key,
@@ -143,7 +115,7 @@ function eventListener(key, eventName, event) {
                 event.preventDefault();
             }
 
-            postMessageToAppThread({
+            channel.postMessageToWorker({
                 type: 'EVENT',
                 data: {
                     key: key,
@@ -214,11 +186,11 @@ function updateDom(data) {
 }
 
 function onCreate(data) {
-    var container, stored;
+    var target, stored;
 
-    container = document.querySelector(data.selector);
+    target = document.querySelector(data.selector);
 
-    if (container == null) {
+    if (target == null) {
         throw new Error('selector did not match an element');
     }
 
@@ -230,8 +202,12 @@ function onCreate(data) {
         stored = store[data.key];
     }
 
-    stored.target = document.createElement('div');
-    container.insertBefore(stored.target, container.firstChild);
+    if (!!data.options.replace) {
+        stored.target = target;
+    } else {
+        stored.target = document.createElement('div');
+        target.insertBefore(stored.target, target.firstChild);
+    }
 
     stored.eventListeners = {};
 }
@@ -248,12 +224,8 @@ function onEvent(data) {
     }
 }
 
-module.exports = extend(vdom, {
-    namespace: 'VIRTUAL_DOM',
-    handleMessage: handleMessage,
-    initAppThread: initAppThread,
-    initUserThread: initUserThread,
+channel.on('CREATE', onCreate);
+channel.on('PATCH', onPatch);
+channel.on('EVENT', onEvent);
 
-    // API
-    vdom: vdom
-});
+module.exports = vdom;
