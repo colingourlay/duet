@@ -11,16 +11,14 @@ function css() {
 
     channel.postMessageToMain({
         type: 'STYLES',
-        data: {
-            value: csjs.getCss(styles)
-        }
+        data: csjs.getCss(styles)
     });
 
     return styles;
 }
 
 function onStyles(data) {
-    insertCSS(data.value);
+    insertCSS(data);
 }
 
 channel.on('STYLES', onStyles);

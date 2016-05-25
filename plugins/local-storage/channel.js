@@ -1,1 +1,1 @@
-module.exports = require('../../lib/channel')('LOCAL_STORAGE');
+module.exports = require('duet-channel')('LOCAL_STORAGE');

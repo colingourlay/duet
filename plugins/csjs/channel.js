@@ -1,1 +1,1 @@
-module.exports = require('../../lib/channel')('CSJS');
+module.exports = require('duet-channel')('CSJS');

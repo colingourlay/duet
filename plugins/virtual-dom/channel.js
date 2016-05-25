@@ -1,1 +1,1 @@
-module.exports = require('../../lib/channel')('VIRTUAL_DOM');
+module.exports = require('duet-channel')('VIRTUAL_DOM');

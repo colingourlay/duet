@@ -1,4 +1,4 @@
-var createChannel = require('../../lib/channel');
+var duetChannel = require('duet-channel');
 
 function onclick(event) {
     if (event.target.localName !== 'a' ||
@@ -33,6 +33,6 @@ function connected(counterpartName) {
     window.onpopstate = onpopstate;
 }
 
-var channel = createChannel('LOCATION', connected);
+var channel = duetChannel('LOCATION', connected);
 
 module.exports = channel;
