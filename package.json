@@ -1,7 +1,7 @@
 {
   "name": "duet",
   "description": "Write performant web apps that run inside web worker threads, without sacrificing easy access to main thread APIs such as the DOM.",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
