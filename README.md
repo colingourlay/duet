@@ -58,10 +58,11 @@ In browsers that don't support web workers, the worker thread and API is mocked,
 
 ## Modules that provide channels
 
-* [duet-virtual-dom](https://github.com/colingourlay/duet-virtual-dom) - Use a virtual DOM with duet by passing patches from the worker thread to the main thread, and expected DOM events back in.
+* [duet-virtual-dom](https://github.com/colingourlay/duet-virtual-dom) - Use a virtual DOM with duet by passing patches from the worker thread to the main thread, and expected DOM events back in (uses [virtual-dom](https://github.com/Matt-Esch/virtual-dom)).
 * [duet-local-storage](https://github.com/colingourlay/duet-local-storage) - Use the browser's localStorage API with duet by reading and writing asynchronously across threads.
-* [duet-location](https://github.com/colingourlay/duet-location) - Subscribe to in-app navigation & history state changes from duet' s worker thread.
-* [duet-csjs](https://github.com/colingourlay/duet-csjs) - Use CSJS with duet by passing CSS Modules-enabled stylesheets from the worker thread to the main thread which are injected into the document's head.
+* [duet-localforage](https://github.com/colingourlay/duet-localforage) - Use [localForage](https://github.com/mozilla/localForage) with duet by reading and writing to IndexedDB across threads when your worker doesn't have direct access (e.g. in Safari).
+* [duet-location](https://github.com/colingourlay/duet-location) - Subscribe to in-app navigation & history state changes from duet's worker thread.
+* [duet-csjs](https://github.com/colingourlay/duet-csjs) - Use [CSJS](https://github.com/rtsao/csjs) with duet by passing CSS Modules-enabled stylesheets from the worker thread to the main thread which are injected into the document's head.
 
 If you want to build your own channel, [duet-channel](https://github.com/colingourlay/duet-channel) is what you're looking for.
 
